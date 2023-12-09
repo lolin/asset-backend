@@ -1,0 +1,2 @@
+Create Model and Migration:
+   npx sequelize-cli model:generate --name AssetModel --attributes name:string,imageUrl:string,modelNumber:string,manufaturerId:number,categoryId:number,depreciationId:number,eol:number,notes:string
