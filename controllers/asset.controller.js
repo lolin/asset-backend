@@ -1,4 +1,4 @@
-const { Asset, Department, Category, Brand, Vendor, Condition } = require("../models");
+const { Asset, Department, Category, Manufacturer, Vendor, Condition } = require("../models");
 const { Op } = require("sequelize");
 class AssetController {
     static showAll = async (req, res) => {
@@ -41,7 +41,7 @@ class AssetController {
                     }
                 },
                 {
-                    model: Brand,
+                    model: Manufacturer,
                     attributes: {
                         exclude: ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
                     }
@@ -95,7 +95,7 @@ class AssetController {
             name,
             categoryId,
             departmentId,
-            brandId,
+            manufacturerId,
             vendorId,
             conditionId,
             model,
@@ -112,7 +112,7 @@ class AssetController {
                 name: name,
                 categoryId: categoryId,
                 departmentId: departmentId,
-                brandId: brandId,
+                manufacturerId: manufacturerId,
                 vendorId: vendorId,
                 conditionId: conditionId,
                 model: model,
@@ -143,7 +143,7 @@ class AssetController {
             name,
             categoryId,
             departmentId,
-            brandId,
+            manufacturerId,
             vendorId,
             conditionId,
             model,
@@ -168,7 +168,7 @@ class AssetController {
                     name: name,
                     categoryId: categoryId,
                     departmentId: departmentId,
-                    brandId: brandId,
+                    manufacturerId: manufacturerId,
                     vendorId: vendorId,
                     conditionId: conditionId,
                     model: model,

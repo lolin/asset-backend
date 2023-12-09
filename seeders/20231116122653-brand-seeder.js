@@ -12,7 +12,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('brands', [{
+    await queryInterface.bulkInsert('manufacturers', [{
       name: 'Lenovo',
       createdBy: 1,
       modifiedBy: 1,

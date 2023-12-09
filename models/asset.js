@@ -73,7 +73,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           args: true,
-          msg: "Brand cannot be empty"
+          msg: "Manufacturer cannot be empty"
         }
       }
     },

@@ -29,10 +29,10 @@ module.exports = {
         },
         allowNull: false,
       },
-      brandId: {
+      manufacturerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'brands',
+          model: 'manufacturers',
           key: 'id'
         },
         allowNull: false,
