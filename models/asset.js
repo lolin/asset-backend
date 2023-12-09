@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'categoryId'
       })
 
-      Asset.hasOne(models.Brand, {
+      Asset.hasOne(models.Manufacturer, {
         foreignKey: 'id',
-        sourceKey: 'brandId'
+        sourceKey: 'manufacturerId'
       })
       Asset.hasOne(models.Vendor, {
         foreignKey: 'id',
@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    brandId: {
+    manufacturerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

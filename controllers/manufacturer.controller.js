@@ -1,12 +1,12 @@
-const { Brand } = require("../models");
+const { Manufacturer } = require("../models");
 const { Op } = require("sequelize");
-class BrandController {
+class ManufacturerController {
     static showAll = async (req, res) => {
         const keyword = req.query.key || "";
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const offset = limit * (page - 1);
-        const totalRows = await Brand.count({
+        const totalRows = await Manufacturer.count({
             where: {
                 [Op.or]: [{
                     name: {
@@ -16,7 +16,7 @@ class BrandController {
             }
         });
         const totalPage = Math.ceil(totalRows / limit);
-        const result = await Brand.findAll({
+        const result = await Manufacturer.findAll({
             where: {
                 [Op.or]: [{
                     name: {
@@ -31,7 +31,7 @@ class BrandController {
             ]
         });
         res.json({
-            message: "Get data Brands success",
+            message: "Get data Manufacturers success",
             data: result,
             page: page,
             limit: limit,
@@ -42,9 +42,9 @@ class BrandController {
     static getDataById = async (req, res) => {
         const { id } = req.params
         try {
-            const data = await Brand.findByPk(id);
+            const data = await Manufacturer.findByPk(id);
             res.json({
-                message: "Get data Brands success",
+                message: "Get data Manufacturers success",
                 data: data
             })
         } catch (error) {
@@ -62,14 +62,14 @@ class BrandController {
             })
         }
         try {
-            const newBrand = await Brand.create({
+            const newManufacturer = await Manufacturer.create({
                 name: name,
                 createdBy: 1,
                 modifiedBy: 1
             });
             res.status(201).json({
-                message: "Create brand success",
-                data: newBrand
+                message: "Create Manufacturer success",
+                data: newManufacturer
             })
         } catch (error) {
             res.status(500).json({
@@ -86,22 +86,22 @@ class BrandController {
                 message: "Name is required"
             })
         }
-        const brand = await Brand.findByPk(id);
-        if (!brand) {
+        const Manufacturer = await Manufacturer.findByPk(id);
+        if (!Manufacturer) {
             return res.status(404).json({
-                message: "Brand not found"
+                message: "Manufacturer not found"
             })
         }
         try {
-            const updateBrand = await Brand.update(
+            const updateManufacturer = await Manufacturer.update(
                 { name: name, modifiedBy: 1, },
                 { where: { id: id } }
             );
 
-            const brandUpdate = await Brand.findByPk(id);
+            const ManufacturerUpdate = await Manufacturer.findByPk(id);
             res.json({
-                message: "Update brand success",
-                data: brandUpdate
+                message: "Update Manufacturer success",
+                data: ManufacturerUpdate
             })
         } catch (error) {
             res.status(500).json({
@@ -113,21 +113,21 @@ class BrandController {
     static destroy = async (req, res) => {
         const { id } = req.params;
         // const { reason } = req.body;
-        const brand = await Brand.findByPk(id);
-        if (!brand) {
+        const Manufacturer = await Manufacturer.findByPk(id);
+        if (!Manufacturer) {
             return res.status(404).json({
-                message: "Brand not found"
+                message: "Manufacturer not found"
             })
         }
-        // console.log(brand)
+        // console.log(Manufacturer)
         try {
             // hapus langsung
-            await Brand.destroy({
+            await Manufacturer.destroy({
                 where: {
                     id: id
                 }
             });
-            // await Brand.update(
+            // await Manufacturer.update(
             //     {
             //         isDeleted: true,
             //         isActive: false,
@@ -138,7 +138,7 @@ class BrandController {
             //     { where: { id: id } }
             // );
             res.json({
-                message: "Delete brand success",
+                message: "Delete Manufacturer success",
                 data: null
             })
         } catch (error) {
@@ -150,4 +150,4 @@ class BrandController {
 
     }
 }
-module.exports = BrandController
+module.exports = ManufacturerController
