@@ -27,14 +27,6 @@ class DepreciationController {
             attributes: {
                 exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
             },
-            include: [
-                {
-                    model: Company,
-                    attributes: {
-                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
-                    }
-                }
-            ],
             offset: offset,
             limit: limit,
             order: [
@@ -102,8 +94,8 @@ class DepreciationController {
             })
         }
 
-        const Depreciation = await Depreciation.findByPk(id);
-        if (!Depreciation) {
+        const depresiasi = await Depreciation.findByPk(id);
+        if (!depresiasi) {
             return res.status(404).json({
                 message: "Depreciation not found"
             })
@@ -127,9 +119,10 @@ class DepreciationController {
         }
     }
     static destroy = async (req, res) => {
+        console.log("depresaisi: ", req.params)
         const { id } = req.params;
-        const Depreciation = await Depreciation.findByPk(id);
-        if (!Depreciation) {
+        const depresiasi = await Depreciation.findByPk(id);
+        if (!depresiasi) {
             return res.status(404).json({
                 message: "Depreciation not found"
             })
