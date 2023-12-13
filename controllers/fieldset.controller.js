@@ -55,6 +55,7 @@ class FieldSetController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name } = req.body;
         if (!name) {
             return res.status(400).json({
@@ -65,8 +66,8 @@ class FieldSetController {
             const newFieldSet = await FieldSet.create(
                 {
                     name: name,
-                    createdBy: 1,
-                    modifiedBy: 1
+                    createdBy: userId,
+                    modifiedBy: userId
                 }
             );
             res.status(201).json({
@@ -81,6 +82,7 @@ class FieldSetController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name } = req.body;
         if (!name) {
@@ -95,7 +97,7 @@ class FieldSetController {
             })
         }
         try {
-            await datas.update({ name: name, modifiedBy: 1 },
+            await datas.update({ name: name, modifiedBy: userId },
                 { where: { id: id } }
             );
 
@@ -112,6 +114,7 @@ class FieldSetController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const datas = await FieldSet.findByPk(id);
         if (!datas) {
@@ -124,9 +127,9 @@ class FieldSetController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

@@ -38,6 +38,7 @@ class AssetRemoteAccessController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { assetId, remoteType, remoteId, password } = req.body;
         try {
             const newAssetRemoteAccess = await AssetRemoteAccess.create({
@@ -45,8 +46,8 @@ class AssetRemoteAccessController {
                 remoteType: remoteType,
                 remoteId: remoteId,
                 password: password,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create Asset Remote Access success",
@@ -60,9 +61,9 @@ class AssetRemoteAccessController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { assetId, remoteType, remoteId, password } = req.body;
-        // console.log(req.body)
         const remoteaccess = await AssetRemoteAccess.findByPk(id);
 
         if (!remoteaccess) {
@@ -77,7 +78,7 @@ class AssetRemoteAccessController {
                     remoteType: remoteType,
                     remoteId: remoteId,
                     password: password,
-                    modifiedBy: 1,
+                    modifiedBy: userId,
                 },
                 { where: { id: id } }
             );
@@ -95,8 +96,8 @@ class AssetRemoteAccessController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        // const { reason } = req.body;
         const AssetRemoteAccess = await AssetRemoteAccess.findByPk(id);
         if (!AssetRemoteAccess) {
             return res.status(404).json({
@@ -108,9 +109,9 @@ class AssetRemoteAccessController {
                 {
                     isDeleted: true,
                     isActive: false,
-                    deletedBy: 1,
+                    deletedBy: userId,
                     deletedAt: new Date(),
-                    modifiedBy: 1
+                    modifiedBy: userId
                 },
                 { where: { id: id } }
             );

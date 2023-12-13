@@ -1,7 +1,6 @@
 const { Vendor, Asset } = require("../models");
 const { Op } = require("sequelize");
 class VendorController {
-
     static showAll = async (req, res) => {
         const keyword = req.query.key || "";
         const page = parseInt(req.query.page) || 1;
@@ -70,7 +69,17 @@ class VendorController {
         }
     }
     static store = async (req, res) => {
-        const { name, phone, email, address, website, onlineShop, picName, picPhone, picEmail } = req.body;
+        const userId = req.userData.id
+        const {
+            name,
+            phone,
+            email,
+            address,
+            website,
+            onlineShop,
+            picName,
+            picPhone,
+            picEmail } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -89,8 +98,8 @@ class VendorController {
                 picEmail: picEmail,
                 isActive: true,
                 isDeleted: false,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create vendor success",
@@ -104,8 +113,18 @@ class VendorController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        const { name, phone, email, address, website, onlineShop, picName, picPhone, picEmail } = req.body;
+        const {
+            name,
+            phone,
+            email,
+            address,
+            website,
+            onlineShop,
+            picName,
+            picPhone,
+            picEmail } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -121,7 +140,6 @@ class VendorController {
             const updateVendor = await Vendor.update(
                 {
                     name: name,
-                    modifiedBy: 1,
                     phone: phone,
                     email: email,
                     address: address,
@@ -129,7 +147,8 @@ class VendorController {
                     onlineShop: onlineShop,
                     picName: picName,
                     picPhone: picPhone,
-                    picEmail: picEmail
+                    picEmail: picEmail,
+                    modifiedBy: userId
                 },
                 { where: { id: id } }
             );
@@ -147,6 +166,7 @@ class VendorController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const vendor = await Vendor.findByPk(id);
         if (!vendor) {
@@ -164,9 +184,9 @@ class VendorController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

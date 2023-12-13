@@ -91,6 +91,7 @@ class AssetController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const {
             name,
             categoryId,
@@ -123,8 +124,8 @@ class AssetController {
                 price: price,
                 purchaseDate: purchaseDate,
                 warrantyPeriod: warrantyPeriod,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create asset success",

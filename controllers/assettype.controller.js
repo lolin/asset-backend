@@ -1,13 +1,13 @@
-const { Company, Department } = require("../models");
+const { AssetType } = require("../models");
 const { Op } = require("sequelize");
-class CompanyController {
+class AssetTypeController {
 
     static showAll = async (req, res) => {
         const keyword = req.query.key || "";
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const offset = limit * (page - 1);
-        const totalRows = await Company.count({
+        const totalRows = await AssetType.count({
             where: {
                 [Op.or]: [{
                     name: {
@@ -17,7 +17,7 @@ class CompanyController {
             }
         });
         const totalPage = Math.ceil(totalRows / limit);
-        const data = await Company.findAll({
+        const data = await AssetType.findAll({
             where: {
                 [Op.or]: [{
                     name: {
@@ -31,14 +31,6 @@ class CompanyController {
             attributes: {
                 exclude: ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
             },
-            include: [
-                {
-                    model: Department,
-                    attributes: {
-                        exclude: ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
-                    }
-                }
-            ],
             offset: offset,
             limit: limit,
             order: [
@@ -46,7 +38,7 @@ class CompanyController {
             ]
         });
         res.json({
-            message: "Get data Companys success",
+            message: "Get data AssetTypes success",
             data: data,
             page: page,
             limit: limit,
@@ -59,9 +51,9 @@ class CompanyController {
     static getDataById = async (req, res) => {
         const { id } = req.params
         try {
-            const data = await Company.findByPk(id);
+            const data = await AssetType.findByPk(id);
             res.json({
-                message: "Get data Companys success",
+                message: "Get data AssetTypes success",
                 data: data
             })
         } catch (error) {
@@ -80,14 +72,14 @@ class CompanyController {
             })
         }
         try {
-            const newCompany = await Company.create({
+            const newAssetType = await AssetType.create({
                 name: name,
                 createdBy: userId,
                 modifiedBy: userId
             });
             res.status(201).json({
-                message: "Create company success",
-                data: newCompany
+                message: "Create Asset Status success",
+                data: newAssetType
             })
         } catch (error) {
             res.status(500).json({
@@ -105,22 +97,22 @@ class CompanyController {
                 message: "Name is required"
             })
         }
-        const company = await Company.findByPk(id);
-        if (!company) {
+        const AssetType = await AssetType.findByPk(id);
+        if (!AssetType) {
             return res.status(404).json({
-                message: "Company not found"
+                message: "Asset Status not found"
             })
         }
         try {
-            const updateCompany = await Company.update(
+            const updateAssetType = await AssetType.update(
                 { name: name, modifiedBy: userId, },
                 { where: { id: id } }
             );
 
-            const companyUpdate = await Company.findByPk(id);
+            const AssetTypeUpdate = await AssetType.findByPk(id);
             res.json({
-                message: "Update company success",
-                data: companyUpdate
+                message: "Update AssetType success",
+                data: AssetTypeUpdate
             })
         } catch (error) {
             res.status(500).json({
@@ -132,19 +124,19 @@ class CompanyController {
     static destroy = async (req, res) => {
         const userId = req.userData.id
         const { id } = req.params;
-        const company = await Company.findByPk(id);
-        if (!company) {
+        const AssetType = await AssetType.findByPk(id);
+        if (!AssetType) {
             return res.status(404).json({
-                message: "Company not found"
+                message: "AssetType not found"
             })
         }
         try {
-            await Company.destroy({
+            await AssetType.destroy({
                 where: {
                     id: id
                 }
             });
-            // await Company.update(
+            // await AssetType.update(
             //     {
             //         isDeleted: true,
             //         isActive: false,
@@ -155,7 +147,7 @@ class CompanyController {
             //     { where: { id: id } }
             // );
             res.json({
-                message: "Delete company success",
+                message: "Delete AssetType success",
                 data: null
             })
         } catch (error) {
@@ -167,4 +159,4 @@ class CompanyController {
 
     }
 }
-module.exports = CompanyController
+module.exports = AssetTypeController

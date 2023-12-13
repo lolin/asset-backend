@@ -38,14 +38,15 @@ class AssetAccountController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { assetId, accountName, password } = req.body;
         try {
             const newAssetAccount = await AssetAccount.create({
                 assetId: assetId,
                 accountName: accountName,
                 password: password,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create Asset Account success",
@@ -59,6 +60,7 @@ class AssetAccountController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { assetId, accountName, password } = req.body;
 
@@ -75,7 +77,7 @@ class AssetAccountController {
                     assetId: assetId,
                     accountName: accountName,
                     password: password,
-                    modifiedBy: 1,
+                    modifiedBy: userId,
                 },
                 { where: { id: id } }
             );
@@ -93,6 +95,7 @@ class AssetAccountController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         // const { reason } = req.body;
         const AssetAccount = await AssetAccount.findByPk(id);

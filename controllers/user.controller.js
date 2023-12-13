@@ -37,6 +37,7 @@ class UserController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name, email, password } = req.body;
         const hash = bcrypt.hashSync(password, saltRounds)
         if (!name) {
@@ -67,8 +68,8 @@ class UserController {
                 name: name,
                 email: email,
                 password: hash,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create user success",
@@ -82,6 +83,7 @@ class UserController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name, email, password } = req.body;
         var hash = null;
@@ -111,7 +113,7 @@ class UserController {
         }
         try {
             const updateUser = await User.update(
-                { name: name, email: email, password: hash, modifiedBy: 1, },
+                { name: name, email: email, password: hash, modifiedBy: userId, },
                 { where: { id: id } }
             );
 
@@ -128,15 +130,14 @@ class UserController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        // const { reason } = req.body;
         const user = await User.findByPk(id);
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
             })
         }
-        // console.log(user)
         try {
             // hapus langsung
             await User.destroy({

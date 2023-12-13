@@ -59,6 +59,7 @@ class ConditionController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name, description } = req.body;
         if (!name) {
             return res.status(400).json({
@@ -74,8 +75,8 @@ class ConditionController {
             const newCondition = await Condition.create({
                 name: name,
                 description: description,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create condition success",
@@ -89,6 +90,7 @@ class ConditionController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name, description } = req.body;
         if (!name) {
@@ -112,7 +114,7 @@ class ConditionController {
                 {
                     name: name,
                     description: description,
-                    modifiedBy: 1,
+                    modifiedBy: userId,
                 },
                 { where: { id: id } }
             );
@@ -130,6 +132,7 @@ class ConditionController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         // const { reason } = req.body;
         const condition = await Condition.findByPk(id);
@@ -150,9 +153,9 @@ class ConditionController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

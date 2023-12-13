@@ -63,7 +63,14 @@ class CustomFieldController {
         }
     }
     static store = async (req, res) => {
-        const { fieldSetId, fieldName, fieldType, fieldValue, fieldFormat, helperText } = req.body;
+        const userId = req.userData.id
+        const {
+            fieldSetId,
+            fieldName,
+            fieldType,
+            fieldValue,
+            fieldFormat,
+            helperText } = req.body;
         if (!fieldSetId) {
             return res.status(400).json({
                 message: "Field Set is required"
@@ -79,13 +86,6 @@ class CustomFieldController {
                 message: "Field Type is required"
             })
         }
-        // if (!fieldFormat) {
-        //     return res.status(400).json({
-        //         message: "Field Format is required"
-        //     })
-        // }
-
-        console.log(fieldSetId, fieldName, fieldType, fieldValue, fieldFormat, helperText);
 
         try {
             const result = await CustomField.create(
@@ -96,8 +96,8 @@ class CustomFieldController {
                     fieldValue: fieldValue,
                     fieldFormat: fieldFormat,
                     helperText: helperText,
-                    createdBy: 1,
-                    modifiedBy: 1
+                    createdBy: userId,
+                    modifiedBy: userId
                 }
             );
             res.status(201).json({
@@ -112,8 +112,16 @@ class CustomFieldController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        const { fieldSetId, fieldName, fieldType, fieldValue, fieldFormat, helperText } = req.body;
+        const {
+            fieldSetId,
+            fieldName,
+            fieldType,
+            fieldValue,
+            fieldFormat,
+            helperText
+        } = req.body;
         if (!fieldSetId) {
             return res.status(400).json({
                 message: "Field Set is required"
@@ -143,7 +151,7 @@ class CustomFieldController {
                 fieldValue: fieldValue,
                 fieldFormat: fieldFormat,
                 helperText: helperText,
-                createdBy: 1,
+                modifiedBy: userId
             },
                 { where: { id: id } }
             );
@@ -161,6 +169,7 @@ class CustomFieldController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const result = await CustomField.findByPk(id);
         if (!result) {
@@ -173,9 +182,9 @@ class CustomFieldController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

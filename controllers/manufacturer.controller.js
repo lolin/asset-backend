@@ -55,6 +55,7 @@ class ManufacturerController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name } = req.body;
         if (!name) {
             return res.status(400).json({
@@ -64,8 +65,8 @@ class ManufacturerController {
         try {
             const newManufacturer = await Manufacturer.create({
                 name: name,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create Manufacturer success",
@@ -79,6 +80,7 @@ class ManufacturerController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name } = req.body;
         if (!name) {
@@ -94,7 +96,7 @@ class ManufacturerController {
         }
         try {
             const updateManufacturer = await Manufacturer.update(
-                { name: name, modifiedBy: 1, },
+                { name: name, modifiedBy: userId, },
                 { where: { id: id } }
             );
 
@@ -111,8 +113,8 @@ class ManufacturerController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        // const { reason } = req.body;
         const Manufacturer = await Manufacturer.findByPk(id);
         if (!Manufacturer) {
             return res.status(404).json({
@@ -131,9 +133,9 @@ class ManufacturerController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

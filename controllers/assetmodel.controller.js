@@ -81,6 +81,7 @@ class AssetModelController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const {
             name,
             imageUrl,
@@ -118,8 +119,8 @@ class AssetModelController {
                 depreciationId: depreciationId,
                 eol: eol,
                 notes: notes,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             console.log(newAssetModel)
             res.status(201).json({
@@ -134,8 +135,18 @@ class AssetModelController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        const { name, imageUrl, modelNumber, manufacturerId, categoryId, fieldSetId, depreciationId, eol, notes } = req.body;
+        const {
+            name,
+            imageUrl,
+            modelNumber,
+            manufacturerId,
+            categoryId,
+            fieldSetId,
+            depreciationId,
+            eol,
+            notes } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -169,7 +180,7 @@ class AssetModelController {
                     depreciationId: depreciationId,
                     eol: eol,
                     notes: notes,
-                    modifiedBy: 1,
+                    modifiedBy: userId,
                 },
                 { where: { id: id } }
             );
@@ -187,6 +198,7 @@ class AssetModelController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         // const { reason } = req.body;
         const result = await AssetModel.findByPk(id);
@@ -207,9 +219,9 @@ class AssetModelController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

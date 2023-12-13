@@ -67,8 +67,8 @@ class DepartmentController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name, companyId } = req.body;
-        // console.log(name, companyId);
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -83,8 +83,8 @@ class DepartmentController {
             const newDepartment = await Department.create({
                 name: name,
                 companyId: companyId,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create department success",
@@ -98,6 +98,7 @@ class DepartmentController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name, companyId } = req.body;
         if (!name) {
@@ -118,7 +119,7 @@ class DepartmentController {
         }
         try {
             await Department.update(
-                { name: name, companyId: companyId, modifiedBy: 1, },
+                { name: name, companyId: companyId, modifiedBy: userId, },
                 { where: { id: id } }
             );
 
@@ -135,6 +136,7 @@ class DepartmentController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const department = await Department.findByPk(id);
         if (!department) {
@@ -147,9 +149,9 @@ class DepartmentController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

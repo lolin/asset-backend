@@ -59,6 +59,7 @@ class DepreciationController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { name, term, floorValue } = req.body;
         if (!name) {
             return res.status(400).json({
@@ -71,8 +72,8 @@ class DepreciationController {
                 name: name,
                 term: term,
                 floorValue: floorValue,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create Depreciation success",
@@ -86,6 +87,7 @@ class DepreciationController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { name, term, floorValue } = req.body;
         console.log(name, term, floorValue)
@@ -103,7 +105,7 @@ class DepreciationController {
         }
         try {
             await Depreciation.update(
-                { name: name, term: term || null, floorValue: floorValue || null, modifiedBy: 1, },
+                { name: name, term: term || null, floorValue: floorValue || null, modifiedBy: userId, },
                 { where: { id: id } }
             );
 
@@ -120,7 +122,7 @@ class DepreciationController {
         }
     }
     static destroy = async (req, res) => {
-        console.log("depresaisi: ", req.params)
+        const userId = req.userData.id
         const { id } = req.params;
         const depresiasi = await Depreciation.findByPk(id);
         if (!depresiasi) {
@@ -133,9 +135,9 @@ class DepreciationController {
             //     {
             //         isDeleted: true,
             //         isActive: false,
-            //         deletedBy: 1,
+            //         deletedBy: userId,
             //         deletedAt: new Date(),
-            //         modifiedBy: 1
+            //         modifiedBy: userId
             //     },
             //     { where: { id: id } }
             // );

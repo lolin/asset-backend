@@ -38,6 +38,7 @@ class AssetUserController {
         }
     }
     static store = async (req, res) => {
+        const userId = req.userData.id
         const { assetId, nik, name, departmentId } = req.body;
         try {
             const newAssetUser = await AssetUser.create({
@@ -45,8 +46,8 @@ class AssetUserController {
                 nik: nik,
                 name: name,
                 departmentId: departmentId,
-                createdBy: 1,
-                modifiedBy: 1
+                createdBy: userId,
+                modifiedBy: userId
             });
             res.status(201).json({
                 message: "Create Asset User success",
@@ -60,6 +61,7 @@ class AssetUserController {
         }
     }
     static update = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
         const { assetId, nik, name, departmentId } = req.body;
         // console.log(req.body)
@@ -77,7 +79,7 @@ class AssetUserController {
                     nik: nik,
                     name: name,
                     departmentId: departmentId,
-                    modifiedBy: 1,
+                    modifiedBy: userId,
                 },
                 { where: { id: id } }
             );
@@ -95,8 +97,8 @@ class AssetUserController {
         }
     }
     static destroy = async (req, res) => {
+        const userId = req.userData.id
         const { id } = req.params;
-        // const { reason } = req.body;
         const AssetUser = await AssetUser.findByPk(id);
         if (!AssetUser) {
             return res.status(404).json({
@@ -108,9 +110,9 @@ class AssetUserController {
                 {
                     isDeleted: true,
                     isActive: false,
-                    deletedBy: 1,
+                    deletedBy: userId,
                     deletedAt: new Date(),
-                    modifiedBy: 1
+                    modifiedBy: userId
                 },
                 { where: { id: id } }
             );
