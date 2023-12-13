@@ -1,4 +1,4 @@
-const { CustomField } = require("../models");
+const { CustomField, FieldSet } = require("../models");
 const { Op } = require("sequelize");
 class CustomFieldController {
     static showAll = async (req, res) => {
@@ -9,7 +9,7 @@ class CustomFieldController {
         const totalRows = await CustomField.count({
             where: {
                 [Op.or]: [{
-                    name: {
+                    fieldName: {
                         [Op.iLike]: '%' + keyword + '%'
                     }
                 }]
@@ -24,6 +24,14 @@ class CustomFieldController {
                     }
                 }]
             },
+            include: [
+                {
+                    model: FieldSet,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                }
+            ],
             offset: offset,
             limit: limit,
             order: [
@@ -71,13 +79,16 @@ class CustomFieldController {
                 message: "Field Type is required"
             })
         }
-        if (!fieldFormat) {
-            return res.status(400).json({
-                message: "Field Format is required"
-            })
-        }
+        // if (!fieldFormat) {
+        //     return res.status(400).json({
+        //         message: "Field Format is required"
+        //     })
+        // }
+
+        console.log(fieldSetId, fieldName, fieldType, fieldValue, fieldFormat, helperText);
+
         try {
-            const newCustomField = await CustomField.create(
+            const result = await CustomField.create(
                 {
                     fieldSetId: fieldSetId,
                     fieldName: fieldName,
@@ -91,7 +102,7 @@ class CustomFieldController {
             );
             res.status(201).json({
                 message: "Create CustomField success",
-                data: newCustomField
+                data: result
             })
         } catch (error) {
             res.status(500).json({
@@ -102,20 +113,38 @@ class CustomFieldController {
     }
     static update = async (req, res) => {
         const { id } = req.params;
-        const { name } = req.body;
-        if (!name) {
+        const { fieldSetId, fieldName, fieldType, fieldValue, fieldFormat, helperText } = req.body;
+        if (!fieldSetId) {
             return res.status(400).json({
-                message: "Name is required"
+                message: "Field Set is required"
             })
         }
-        const CustomField = await CustomField.findByPk(id);
-        if (!CustomField) {
+        if (!fieldName) {
+            return res.status(400).json({
+                message: "Field Nsme is required"
+            })
+        }
+        if (!fieldType) {
+            return res.status(400).json({
+                message: "Field Type is required"
+            })
+        }
+        const datas = await CustomField.findByPk(id);
+        if (!datas) {
             return res.status(404).json({
                 message: "CustomField not found"
             })
         }
         try {
-            await CustomField.update({ name: name, modifiedBy: 1 },
+            await CustomField.update({
+                fieldSetId: fieldSetId,
+                fieldName: fieldName,
+                fieldType: fieldType,
+                fieldValue: fieldValue,
+                fieldFormat: fieldFormat,
+                helperText: helperText,
+                createdBy: 1,
+            },
                 { where: { id: id } }
             );
 
@@ -133,8 +162,8 @@ class CustomFieldController {
     }
     static destroy = async (req, res) => {
         const { id } = req.params;
-        const CustomField = await CustomField.findByPk(id);
-        if (!CustomField) {
+        const result = await CustomField.findByPk(id);
+        if (!result) {
             return res.status(404).json({
                 message: "CustomField not found"
             })

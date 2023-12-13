@@ -18,7 +18,7 @@ module.exports = {
       modelNumber: {
         type: Sequelize.STRING
       },
-      manufaturerId: {
+      manufacturerId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'manufacturers',

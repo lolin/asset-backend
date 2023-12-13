@@ -10,14 +10,33 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      AssetModel.hasOne(models.Manufacturer, {
+        foreignKey: 'id',
+        sourceKey: 'manufacturerId'
+      })
+
+      AssetModel.hasOne(models.Category, {
+        foreignKey: 'id',
+        sourceKey: 'categoryId'
+      })
+
+      AssetModel.hasOne(models.FieldSet, {
+        foreignKey: 'id',
+        sourceKey: 'fieldSetId'
+      })
+
+      AssetModel.hasOne(models.Depreciation, {
+        foreignKey: 'id',
+        sourceKey: 'depreciationId'
+      })
+
     }
   }
   AssetModel.init({
     name: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
     modelNumber: DataTypes.STRING,
-    manufaturerId: DataTypes.NUMBER,
+    manufacturerId: DataTypes.NUMBER,
     categoryId: DataTypes.NUMBER,
     fieldSetId: DataTypes.NUMBER,
     depreciationId: DataTypes.NUMBER,

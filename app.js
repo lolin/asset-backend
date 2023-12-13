@@ -44,7 +44,7 @@ app.use('/assets', express.static(path.join(__dirname, 'public')));
 app.use(middlewareLogRequest);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/manufacturer', authMiddleware, manufacturersRouter);
+app.use('/manufacturers', authMiddleware, manufacturersRouter);
 app.use('/category', authMiddleware, categoriesRouter);
 app.use('/company', authMiddleware, companyRouter);
 app.use('/departments', authMiddleware, departmentRouter);

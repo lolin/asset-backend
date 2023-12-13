@@ -20,7 +20,12 @@ class VendorController {
         const data = await Vendor.findAll({
             where: {
                 isDeleted: false,
-                isActive: true
+                isActive: true,
+                [Op.or]: [{
+                    name: {
+                        [Op.iLike]: '%' + keyword + '%'
+                    }
+                }]
             },
             attributes: {
                 exclude: ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']

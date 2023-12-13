@@ -88,6 +88,7 @@ class DepreciationController {
     static update = async (req, res) => {
         const { id } = req.params;
         const { name, term, floorValue } = req.body;
+        console.log(name, term, floorValue)
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -102,7 +103,7 @@ class DepreciationController {
         }
         try {
             await Depreciation.update(
-                { name: name, term: term, floorValue: floorValue, modifiedBy: 1, },
+                { name: name, term: term || null, floorValue: floorValue || null, modifiedBy: 1, },
                 { where: { id: id } }
             );
 

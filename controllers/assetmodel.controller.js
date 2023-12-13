@@ -1,4 +1,4 @@
-const { AssetModel } = require("../models");
+const { AssetModel, Manufacturer, Category, FieldSet, Depreciation } = require("../models");
 const { Op } = require("sequelize");
 class AssetModelController {
     static showAll = async (req, res) => {
@@ -24,6 +24,32 @@ class AssetModelController {
                     }
                 }]
             },
+            include: [
+                {
+                    model: Manufacturer,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: Category,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: FieldSet,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: Depreciation,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                }
+            ],
             offset: offset,
             limit: limit,
             order: [
@@ -55,7 +81,16 @@ class AssetModelController {
         }
     }
     static store = async (req, res) => {
-        const { name, imageUrl, modelNumber, manufaturerId, categoryId, fieldSetId, depreciationId, eol, notes } = req.body;
+        const {
+            name,
+            imageUrl,
+            modelNumber,
+            manufacturerId,
+            categoryId,
+            fieldSetId,
+            depreciationId,
+            eol,
+            notes } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -72,11 +107,12 @@ class AssetModelController {
             })
         }
         try {
+            console.log(req.body)
             const newAssetModel = await AssetModel.create({
                 name: name,
                 imageUrl: imageUrl,
                 modelNumber: modelNumber,
-                manufaturerId: manufaturerId,
+                manufacturerId: manufacturerId,
                 categoryId: categoryId,
                 fieldSetId: fieldSetId,
                 depreciationId: depreciationId,
@@ -85,6 +121,7 @@ class AssetModelController {
                 createdBy: 1,
                 modifiedBy: 1
             });
+            console.log(newAssetModel)
             res.status(201).json({
                 message: "Create AssetModel success",
                 data: newAssetModel
@@ -98,7 +135,7 @@ class AssetModelController {
     }
     static update = async (req, res) => {
         const { id } = req.params;
-        const { name, imageUrl, modelNumber, manufaturerId, categoryId, fieldSetId, depreciationId, eol, notes } = req.body;
+        const { name, imageUrl, modelNumber, manufacturerId, categoryId, fieldSetId, depreciationId, eol, notes } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -114,19 +151,19 @@ class AssetModelController {
                 message: "Depreciation is required"
             })
         }
-        const AssetModel = await AssetModel.findByPk(id);
-        if (!AssetModel) {
+        const result = await AssetModel.findByPk(id);
+        if (!result) {
             return res.status(404).json({
                 message: "AssetModel not found"
             })
         }
         try {
-            const updateAssetModel = await AssetModel.update(
+            const result = await AssetModel.update(
                 {
                     name: name,
                     imageUrl: imageUrl,
                     modelNumber: modelNumber,
-                    manufaturerId: manufaturerId,
+                    manufacturerId: manufacturerId,
                     categoryId: categoryId,
                     fieldSetId: fieldSetId,
                     depreciationId: depreciationId,
@@ -152,8 +189,8 @@ class AssetModelController {
     static destroy = async (req, res) => {
         const { id } = req.params;
         // const { reason } = req.body;
-        const AssetModel = await AssetModel.findByPk(id);
-        if (!AssetModel) {
+        const result = await AssetModel.findByPk(id);
+        if (!result) {
             return res.status(404).json({
                 message: "Asset Model not found"
             })

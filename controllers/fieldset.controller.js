@@ -88,14 +88,14 @@ class FieldSetController {
                 message: "Name is required"
             })
         }
-        const FieldSet = await FieldSet.findByPk(id);
-        if (!FieldSet) {
+        const datas = await FieldSet.findByPk(id);
+        if (!datas) {
             return res.status(404).json({
                 message: "FieldSet not found"
             })
         }
         try {
-            await FieldSet.update({ name: name, modifiedBy: 1 },
+            await datas.update({ name: name, modifiedBy: 1 },
                 { where: { id: id } }
             );
 
@@ -113,8 +113,8 @@ class FieldSetController {
     }
     static destroy = async (req, res) => {
         const { id } = req.params;
-        const FieldSet = await FieldSet.findByPk(id);
-        if (!FieldSet) {
+        const datas = await FieldSet.findByPk(id);
+        if (!datas) {
             return res.status(404).json({
                 message: "FieldSet not found"
             })
