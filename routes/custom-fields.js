@@ -8,4 +8,6 @@ router.get("/:id", Controller.getDataById);
 router.post("/", Controller.store);
 router.patch("/:id", Controller.update); //params berupa id
 router.delete("/:id", Controller.destroy);
+router.get("/get-by-model/data", Controller.getByModel);
+
 module.exports = router;

@@ -1,4 +1,4 @@
-const { Category } = require("../models");
+const { Category, AssetType } = require("../models");
 const { Op } = require("sequelize");
 class CategoryController {
     static showAll = async (req, res) => {
@@ -24,6 +24,14 @@ class CategoryController {
                     }
                 }]
             },
+            include: [
+                {
+                    model: AssetType,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt']
+                    }
+                }
+            ],
             offset: offset,
             limit: limit,
             order: [
@@ -56,7 +64,7 @@ class CategoryController {
     }
     static store = async (req, res) => {
         const userId = req.userData.id
-        const { name } = req.body;
+        const { name, assetTypeId } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -66,6 +74,7 @@ class CategoryController {
             const newCategory = await Category.create(
                 {
                     name: name,
+                    assetTypeId: assetTypeId,
                     createdBy: userId,
                     modifiedBy: userId
                 }
@@ -84,7 +93,7 @@ class CategoryController {
     static update = async (req, res) => {
         const userId = req.userData.id
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, assetTypeId } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -97,7 +106,7 @@ class CategoryController {
             })
         }
         try {
-            await Category.update({ name: name, modifiedBy: userId },
+            await Category.update({ name: name, assetTypeId: assetTypeId, modifiedBy: userId },
                 { where: { id: id } }
             );
 

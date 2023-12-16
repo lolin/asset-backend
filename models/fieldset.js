@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      FieldSet.hasOne(models.AssetModel, {
+        foreignKey: 'fieldSetId',
+        sourceKey: 'id'
+      })
     }
   }
   FieldSet.init({

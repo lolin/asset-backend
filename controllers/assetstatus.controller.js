@@ -65,7 +65,7 @@ class AssetStatusController {
     }
     static store = async (req, res) => {
         const userId = req.userData.id
-        const { name } = req.body;
+        const { name, description } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
@@ -74,6 +74,7 @@ class AssetStatusController {
         try {
             const newAssetStatus = await AssetStatus.create({
                 name: name,
+                description: description,
                 createdBy: userId,
                 modifiedBy: userId
             });
@@ -91,21 +92,21 @@ class AssetStatusController {
     static update = async (req, res) => {
         const userId = req.userData.id
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, description } = req.body;
         if (!name) {
             return res.status(400).json({
                 message: "Name is required"
             })
         }
-        const AssetStatus = await AssetStatus.findByPk(id);
-        if (!AssetStatus) {
+        const data = await AssetStatus.findByPk(id);
+        if (!data) {
             return res.status(404).json({
                 message: "Asset Status not found"
             })
         }
         try {
             const updateAssetStatus = await AssetStatus.update(
-                { name: name, modifiedBy: userId, },
+                { name: name, description: description, modifiedBy: userId, },
                 { where: { id: id } }
             );
 

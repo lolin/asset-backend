@@ -229,5 +229,18 @@ class AssetController {
         }
 
     }
+    static getLastId = async (req, res) => {
+        const data = await Asset.findAll(
+            {
+                order: [['id', 'DESC']],
+                limit: 1,
+                attributes: ['id']
+            },
+        );
+        res.json({
+            message: "Get last id success",
+            data: data
+        })
+    }
 }
 module.exports = AssetController

@@ -1,5 +1,5 @@
-const { CustomField, FieldSet } = require("../models");
-const { Op } = require("sequelize");
+const { CustomField, FieldSet, AssetModel } = require("../models");
+const { Op, where } = require("sequelize");
 class CustomFieldController {
     static showAll = async (req, res) => {
         const keyword = req.query.key || "";
@@ -203,6 +203,43 @@ class CustomFieldController {
                 serverMessage: error
             })
         }
+
+    }
+
+    static getByModel = async (req, res) => {
+        console.log("iniiiiiiii: ", req.params.id)
+        const result = await CustomField.findAll({
+            include: [
+                {
+                    model: FieldSet,
+                    attributes: {
+                        exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt'],
+
+                    },
+                    include: [
+                        {
+                            model: AssetModel,
+                            attributes: {
+                                exclude: ['createdBy', 'modifiedBy', 'createdAt', 'updatedAt'],
+                                where: {
+                                    id: req.params.id
+                                }
+                            },
+
+
+                        }
+                    ]
+
+                }
+            ],
+            order: [
+                ['fieldName', 'ASC']
+            ]
+        });
+        res.json({
+            message: "Get data Custom Field  success",
+            data: result,
+        });
 
     }
 }

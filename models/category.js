@@ -11,10 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Category.hasOne(models.AssetType, {
+        foreignKey: 'id',
+        sourceKey: 'assetTypeId'
+      })
     }
   }
   Category.init({
     name: DataTypes.STRING,
+    assetTypeId: DataTypes.INTEGER,
     isActive: DataTypes.BOOLEAN,
     isDeleted: DataTypes.BOOLEAN,
     deletedAt: DataTypes.DATE,

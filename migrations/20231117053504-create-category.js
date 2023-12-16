@@ -12,6 +12,14 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      assetTypeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'asset_types',
+          key: 'id'
+        }
+      },
       isActive: {
         type: Sequelize.BOOLEAN,
         defaultValue: true

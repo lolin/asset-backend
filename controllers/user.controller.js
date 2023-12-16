@@ -37,7 +37,7 @@ class UserController {
         }
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userId = 1
         const { name, email, password } = req.body;
         const hash = bcrypt.hashSync(password, saltRounds)
         if (!name) {

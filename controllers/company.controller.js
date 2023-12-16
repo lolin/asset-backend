@@ -105,8 +105,8 @@ class CompanyController {
                 message: "Name is required"
             })
         }
-        const company = await Company.findByPk(id);
-        if (!company) {
+        const data = await Company.findByPk(id);
+        if (!data) {
             return res.status(404).json({
                 message: "Company not found"
             })
