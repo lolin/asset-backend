@@ -1,4 +1,4 @@
-const { Asset, Department, Category, Manufacturer, Vendor, Condition } = require("../models");
+const { Asset, Department, Category, Manufacturer, Vendor, Condition, AssetModel } = require("../models");
 const { Op } = require("sequelize");
 const excludeData = ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt'];
 const excludeData2 = ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt'];
@@ -11,6 +11,7 @@ class AssetController {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const offset = limit * (page - 1);
+
         const totalRows = await Asset.count({
             where: {
                 [Op.or]: [{
@@ -21,6 +22,7 @@ class AssetController {
             }
         });
         const totalPage = Math.ceil(totalRows / limit);
+
         const result = await Asset.findAll({
             where: {
                 [Op.or]: [{
@@ -40,25 +42,16 @@ class AssetController {
                     }
                 },
                 {
-                    model: Category,
+                    model: AssetModel,
                     attributes: {
                         exclude: excludeData
-                    }
-                },
-                {
-                    model: Manufacturer,
-                    attributes: {
-                        exclude: excludeData
-                    }
+                    },
+                    include: [{
+                        model: Category,
+                    }],
                 },
                 {
                     model: Vendor,
-                    attributes: {
-                        exclude: excludeData
-                    }
-                },
-                {
-                    model: Condition,
                     attributes: {
                         exclude: excludeData
                     }
@@ -87,13 +80,7 @@ class AssetController {
                     }
                 },
                 {
-                    model: Category,
-                    attributes: {
-                        exclude: excludeData
-                    }
-                },
-                {
-                    model: Manufacturer,
+                    model: AssetModel,
                     attributes: {
                         exclude: excludeData
                     }
@@ -104,12 +91,6 @@ class AssetController {
                         exclude: excludeData
                     }
                 },
-                {
-                    model: Condition,
-                    attributes: {
-                        exclude: excludeData
-                    }
-                }
             ],
             order: [
                 ['name', 'ASC']
@@ -123,14 +104,12 @@ class AssetController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
+        console.log(req.body);
         const userId = req.userData.id
         const {
             name,
-            categoryId,
             departmentId,
-            manufacturerId,
             vendorId,
-            conditionId,
             model,
             macAddress,
             serialNumber,
@@ -138,16 +117,24 @@ class AssetController {
             assetDetails,
             price,
             purchaseDate,
-            warrantyPeriod
+            warantyPeriod
         } = req.body;
-
+        console.log(
+            name,
+            departmentId,
+            vendorId,
+            model,
+            macAddress,
+            serialNumber,
+            ipAddress,
+            assetDetails,
+            price,
+            purchaseDate,
+            warantyPeriod);
         const result = await Asset.create({
             name: name,
-            categoryId: categoryId,
             departmentId: departmentId,
-            manufacturerId: manufacturerId,
             vendorId: vendorId,
-            conditionId: conditionId,
             model: model,
             serialNumber: serialNumber,
             macAddress: macAddress,
@@ -155,7 +142,7 @@ class AssetController {
             assetDetails: assetDetails,
             price: price,
             purchaseDate: purchaseDate,
-            warrantyPeriod: warrantyPeriod,
+            warantyPeriod: warantyPeriod,
             createdBy: userId,
             modifiedBy: userId
         });
@@ -184,7 +171,7 @@ class AssetController {
         if (!asset) {
             response(404, null, "" + title + " not found", res);
         }
-        const updateAsset = await Asset.update(
+        await Asset.update(
             {
                 name: name,
                 categoryId: categoryId,

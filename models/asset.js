@@ -15,24 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id',
         sourceKey: 'departmentId'
       })
-
-      Asset.hasOne(models.Category, {
+      Asset.hasOne(models.AssetModel, {
         foreignKey: 'id',
-        sourceKey: 'categoryId'
-      })
-
-      Asset.hasOne(models.Manufacturer, {
-        foreignKey: 'id',
-        sourceKey: 'manufacturerId'
+        sourceKey: 'model'
       })
       Asset.hasOne(models.Vendor, {
         foreignKey: 'id',
         sourceKey: 'vendorId'
-      })
-
-      Asset.hasOne(models.Condition, {
-        foreignKey: 'id',
-        sourceKey: 'conditionId'
       })
     }
   }
@@ -47,16 +36,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    categoryId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          args: true,
-          msg: "Category cannot be empty"
-        }
-      }
-    },
     departmentId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -67,27 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    manufacturerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          args: true,
-          msg: "Manufacturer cannot be empty"
-        }
-      }
-    },
     vendorId: DataTypes.INTEGER,
-    conditionId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          args: true,
-          msg: "Condition cannot be empty"
-        }
-      }
-    },
     model: DataTypes.STRING,
     serialNumber: DataTypes.STRING,
     macAddress: DataTypes.STRING,
