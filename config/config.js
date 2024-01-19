@@ -1,4 +1,4 @@
-require('dotenv').config(); // this is important!
+require('dotenv').config();
 module.exports =
 {
   "development": {
@@ -21,5 +21,8 @@ module.exports =
     "database": "asset_management_prod",
     "host": "localhost",
     "dialect": "postgres"
-  }
+  },
+  "secret": process.env.SECRET_KEY,
+  "dbUrl": process.env.DB_URL,
+  "jwtExpires": process.env.JWT_EXPIRES
 }
