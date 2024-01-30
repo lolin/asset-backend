@@ -14,8 +14,8 @@ module.exports = {
     */
     await queryInterface.bulkInsert('companies', [{
       name: 'PT Bali Spirit',
-      createdBy: 1,
-      modifiedBy: 1,
+      createdBy: "Putu Indrayana",
+      modifiedBy: "Putu Indrayana",
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

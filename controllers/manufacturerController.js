@@ -51,34 +51,49 @@ class ManufacturerController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
-        const { name } = req.body;
+        const userName = req.userData.name
+        const { name, image, url, supportUrl, supportPhone, supportEmail, supportAddress } = req.body;
 
         const result = await Manufacturer.create({
             name: name,
-            createdBy: userId,
-            modifiedBy: userId
+            image: image,
+            url: url,
+            supportUrl: supportUrl,
+            supportPhone: supportPhone,
+            supportEmail: supportEmail,
+            supportAddress: supportAddress,
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
 
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, image, url, supportUrl, supportPhone, supportEmail, supportAddress } = req.body;
         const data = await Manufacturer.findByPk(id);
         if (!data) {
             response(404, null, "" + title + " not found", res);
         }
         await Manufacturer.update(
-            { name: name, modifiedBy: userId, },
+            {
+                name: name,
+                image: image,
+                url: url,
+                supportUrl: supportUrl,
+                supportPhone: supportPhone,
+                supportEmail: supportEmail,
+                supportAddress: supportAddress,
+                modifiedBy: userName,
+            },
             { where: { id: id } }
         );
         const result = await Manufacturer.findByPk(id);
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const data = await Manufacturer.findByPk(id);
         console.log(data)

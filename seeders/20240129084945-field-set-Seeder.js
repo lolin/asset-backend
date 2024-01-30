@@ -12,10 +12,10 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('manufacturers', [{
-      name: 'Lenovo',
-      createdBy: 'Putu Indrayana',
-      modifiedBy: 'Putu Indrayana',
+    await queryInterface.bulkInsert('field_sets', [{
+      name: "Laptop and Desktop",
+      createdBy: "Putu Indrayana",
+      modifiedBy: "Putu Indrayana",
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

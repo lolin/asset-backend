@@ -13,14 +13,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      categoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'categories',
-          key: 'id'
-        },
-        allowNull: false,
-      },
       departmentId: {
         type: Sequelize.INTEGER,
         references: {
@@ -29,14 +21,13 @@ module.exports = {
         },
         allowNull: false,
       },
-      manufacturerId: {
+      assetModelId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'manufacturers',
+          model: 'asset_models',
           key: 'id'
         },
         allowNull: false,
-
       },
       vendorId: {
         type: Sequelize.INTEGER,
@@ -44,6 +35,14 @@ module.exports = {
           model: 'vendors',
           key: 'id'
         }
+      },
+      assetStatusId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'asset_statuses',
+          key: 'id'
+        },
+        allowNull: false,
       },
       conditionId: {
         type: Sequelize.INTEGER,
@@ -53,16 +52,10 @@ module.exports = {
         },
         allowNull: false,
       },
-      model: {
-        type: Sequelize.STRING
-      },
       serialNumber: {
         type: Sequelize.STRING,
       },
       macAddress: {
-        type: Sequelize.STRING,
-      },
-      ipAddress: {
         type: Sequelize.STRING,
       },
       assetDetails: {
@@ -91,7 +84,7 @@ module.exports = {
         allowNull: true
       },
       decommissionedBy: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true
       },
       isActive: {
@@ -108,7 +101,7 @@ module.exports = {
         allowNull: true
       },
       deletedBy: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: true
       },
       deletedReason: {
@@ -116,10 +109,10 @@ module.exports = {
         allowNull: true
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

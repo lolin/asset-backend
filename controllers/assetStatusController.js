@@ -63,33 +63,34 @@ class AssetStatusController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { name, description } = req.body;
         const result = await AssetStatus.create({
             name: name,
             description: description,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name, description } = req.body;
         const data = await AssetStatus.findByPk(id);
         if (!data) {
             response(404, null, "" + title + " not found", res);
         }
+        console.log(userName, id, name, description);
         await AssetStatus.update(
-            { name: name, description: description, modifiedBy: userId, },
+            { name: name, description: description, modifiedBy: userName, },
             { where: { id: id } }
         );
         const result = await AssetStatus.findByPk(id);
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const data = await AssetStatus.findByPk(id);
         if (!data) {

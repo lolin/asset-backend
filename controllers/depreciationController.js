@@ -57,20 +57,20 @@ class DepreciationController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { name, term, floorValue } = req.body;
         const result = await Depreciation.create({
             name: name,
             term: term,
             floorValue: floorValue,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(200, result, "Update " + title + " success", res);
 
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name, term, floorValue } = req.body;
         const depresiasi = await Depreciation.findByPk(id);
@@ -78,14 +78,14 @@ class DepreciationController {
             response(404, null, "" + title + " not found", res);
         }
         await Depreciation.update(
-            { name: name, term: term || null, floorValue: floorValue || null, modifiedBy: userId, },
+            { name: name, term: term || null, floorValue: floorValue || null, modifiedBy: userName, },
             { where: { id: id } }
         );
         const result = await Depreciation.findByPk(id);
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const depresiasi = await Depreciation.findByPk(id);
         if (!depresiasi) {

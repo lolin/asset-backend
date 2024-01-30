@@ -16,40 +16,40 @@ module.exports = {
       {
         name: 'Asset',
         description: 'Asset',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Accessory',
         description: 'Accessory asset',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Component',
         description: 'Component asset',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Consumable',
         description: 'Consumable asset',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'License',
         description: 'License asset',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },

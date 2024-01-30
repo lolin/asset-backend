@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const AssetHasCustomField = require('./assetHasCustomField');
 module.exports = (sequelize, DataTypes) => {
   class Asset extends Model {
     /**
@@ -17,11 +18,23 @@ module.exports = (sequelize, DataTypes) => {
       })
       Asset.hasOne(models.AssetModel, {
         foreignKey: 'id',
-        sourceKey: 'model'
+        sourceKey: 'assetModelId'
       })
       Asset.hasOne(models.Vendor, {
         foreignKey: 'id',
         sourceKey: 'vendorId'
+      })
+      Asset.hasOne(models.AssetStatus, {
+        foreignKey: 'id',
+        sourceKey: 'assetStatusId'
+      })
+      Asset.hasOne(models.Condition, {
+        foreignKey: 'id',
+        sourceKey: 'conditionId'
+      })
+      Asset.hasMany(models.AssetHasCustomField, {
+        foreignKey: 'assetId',
+        sourceKey: 'id'
       })
     }
   }
@@ -46,11 +59,30 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    assetModelId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Model cannot be empty"
+        }
+      }
+    },
     vendorId: DataTypes.INTEGER,
-    model: DataTypes.STRING,
+    assetStatusId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Status cannot be empty"
+        }
+      }
+    },
+    conditionId: DataTypes.INTEGER,
     serialNumber: DataTypes.STRING,
     macAddress: DataTypes.STRING,
-    ipAddress: DataTypes.STRING,
     assetDetails: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -71,13 +103,14 @@ module.exports = (sequelize, DataTypes) => {
     isActive: DataTypes.BOOLEAN,
     isDeleted: DataTypes.BOOLEAN,
     deletedAt: DataTypes.DATE,
-    deletedBy: DataTypes.INTEGER,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    deletedBy: DataTypes.STRING,
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'assets',
     sequelize,
     modelName: 'Asset',
+
   });
   return Asset;
 };

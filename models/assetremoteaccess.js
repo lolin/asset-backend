@@ -57,8 +57,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       }
     },
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'remote_accesses',
     sequelize,

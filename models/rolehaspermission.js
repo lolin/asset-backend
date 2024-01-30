@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class FieldSet extends Model {
+  class RoleHasPermission extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,20 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      FieldSet.hasOne(models.AssetModel, {
-        foreignKey: 'fieldSetId',
-        sourceKey: 'id'
-      })
     }
   }
-  FieldSet.init({
-    name: DataTypes.STRING,
-    createdBy: DataTypes.STRING,
-    modifiedBy: DataTypes.STRING
+  RoleHasPermission.init({
+    roleId: DataTypes.NUMBER,
+    permissionId: DataTypes.NUMBER
   }, {
-    tableName: 'field_sets',
+    tableName: 'roles_has_permissions',
     sequelize,
-    modelName: 'FieldSet',
+    modelName: 'RoleHasPermission',
   });
-  return FieldSet;
+  return RoleHasPermission;
 };

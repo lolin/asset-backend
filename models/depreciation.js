@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     term: DataTypes.INTEGER,
     floorValue: DataTypes.DOUBLE,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'depreciations',
     sequelize,

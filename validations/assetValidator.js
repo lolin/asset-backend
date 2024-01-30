@@ -9,12 +9,13 @@ const createAssetValidation = () => {
         body("departmentId")
             .exists({ checkFalsy: true }).withMessage("Department is required")
             .isInt().withMessage("Department should be integer"),
-        body("model")
+        body("assetModelId")
             .exists({ checkFalsy: true }).withMessage("Model is required")
             .isInt().withMessage("Model should be integer"),
         body("serialNumber")
             .optional()
-            .isInt().withMessage("Serial number should be integer"),
+            .isString().withMessage("Serial number should be integer")
+            .isLength({ min: 5 }).withMessage("Serial number should be at least 5 characters long"),
         body("vendorId")
             .optional()
             .isInt().withMessage("Vendor should be integer"),
@@ -25,18 +26,12 @@ const createAssetValidation = () => {
             .optional()
             .isString().withMessage("Mac address should be string")
             .isLength({ min: 5 }).withMessage("Mac address should be at least 5 characters long"),
-        body("ipAddress")
-            .optional()
-            .isString().withMessage("Ip address should be string")
-            .isLength({ min: 5 }).withMessage("Ip address should be at least 5 characters long"),
         body("assetDetails")
             .exists({ checkFalsy: true }).withMessage("Asset details is required")
             .isString().withMessage("Asset details should be string")
             .isLength({ min: 5 }).withMessage("Asset details should be at least 5 characters long"),
         body("price")
-            .optional()
-            .isNumeric().withMessage("Price should be number")
-            .isLength({ min: 1 }).withMessage("Price should be at least 1 characters long"),
+            .optional(),
         body("purchaseDate")
             .optional(),
         body("warrantyPeriod")
@@ -52,51 +47,36 @@ const updateAssetValidation = () => {
             .exists({ checkFalsy: true }).withMessage("Name is required")
             .isString().withMessage("Name should be string")
             .isLength({ min: 2 }).withMessage("Name should be at least 2 characters long"),
-        body("categoryId")
-            .exists({ checkFalsy: true }).withMessage("Category is required")
-            .isInt().withMessage("Category should be integer"),
         body("departmentId")
             .exists({ checkFalsy: true }).withMessage("Department is required")
             .isInt().withMessage("Department should be integer"),
-        body("manufacturerId")
-            .exists({ checkFalsy: true }).withMessage("Manufacturer is required")
-            .isInt().withMessage("Manufacturer should be integer"),
+        body("assetModelId")
+            .exists({ checkFalsy: true }).withMessage("Model is required")
+            .isInt().withMessage("Model should be integer"),
+        body("serialNumber")
+            .optional()
+            .isString().withMessage("Serial number should be integer")
+            .isLength({ min: 5 }).withMessage("Serial number should be at least 5 characters long"),
         body("vendorId")
             .optional()
             .isInt().withMessage("Vendor should be integer"),
-        body("conditionId")
-            .exists({ checkFalsy: true }).withMessage("Condition is required")
-            .isInt().withMessage("Condition should be integer"),
-        body("model")
-            .optional()
-            .isString().withMessage("Model should be string")
-            .isLength({ min: 5 }).withMessage("Model should be at least 5 characters long"),
-        body("serialNumber")
-            .optional()
-            .isString().withMessage("Serial number should be string")
-            .isLength({ min: 5 }).withMessage("Serial number should be at least 5 characters long"),
+        body("assetStatusId")
+            .exists({ checkFalsy: true }).withMessage("Asset Status is required")
+            .isInt().withMessage("Asset Status should be integer"),
         body("macAddress")
             .optional()
             .isString().withMessage("Mac address should be string")
             .isLength({ min: 5 }).withMessage("Mac address should be at least 5 characters long"),
-        body("ipAddress")
-            .optional()
-            .isString().withMessage("Ip address should be string")
-            .isLength({ min: 5 }).withMessage("Ip address should be at least 5 characters long"),
         body("assetDetails")
             .exists({ checkFalsy: true }).withMessage("Asset details is required")
             .isString().withMessage("Asset details should be string")
             .isLength({ min: 5 }).withMessage("Asset details should be at least 5 characters long"),
         body("price")
-            .optional()
-            .isNumeric().withMessage("Price should be number")
-            .isLength({ min: 1 }).withMessage("Price should be at least 1 characters long"),
+            .optional(),
         body("purchaseDate")
-            .optional()
-            .isDate().withMessage("Purchase date should be date"),
+            .optional(),
         body("warrantyPeriod")
-            .optional()
-            .isDate().withMessage("Warranty period should be date"),
+            .optional(),
     ];
 }
 const detailAssetValidation = () => {
@@ -135,6 +115,7 @@ const deleteAssetValidation = () => {
 }
 const validate = (req, res, next) => {
     const errors = validationResult(req);
+    // console.log(errors);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }

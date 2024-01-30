@@ -67,27 +67,27 @@ class CategoryController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { name, assetTypeId } = req.body;
         const result = await Category.create(
             {
                 name: name,
                 assetTypeId: assetTypeId,
-                createdBy: userId,
-                modifiedBy: userId
+                createdBy: userName,
+                modifiedBy: userName
             }
         );
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name, assetTypeId } = req.body;
         const category = await Category.findByPk(id);
         if (!category) {
             response(404, null, "" + title + " not found", res);
         }
-        await Category.update({ name: name, assetTypeId: assetTypeId, modifiedBy: userId },
+        await Category.update({ name: name, assetTypeId: assetTypeId, modifiedBy: userName },
             { where: { id: id } }
         );
         const result = await Category.findByPk(id);
@@ -95,7 +95,7 @@ class CategoryController {
 
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const category = await Category.findByPk(id);
         if (!category) {

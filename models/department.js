@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     isActive: DataTypes.BOOLEAN,
     isDeleted: DataTypes.BOOLEAN,
     deletedAt: DataTypes.DATE,
-    deletedBy: DataTypes.INTEGER,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    deletedBy: DataTypes.STRING,
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'departments',
     sequelize,

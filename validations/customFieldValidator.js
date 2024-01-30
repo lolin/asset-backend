@@ -20,6 +20,9 @@ const createCustomFieldValidation = () => {
         body("helperText")
             .optional(true)
             .isString().withMessage("Helper Text should be string"),
+        body("orderNumber")
+            .optional(true)
+            .isInt().withMessage("Order Number should be number"),
     ];
 }
 const updateCustomFieldValidation = () => {
@@ -45,6 +48,9 @@ const updateCustomFieldValidation = () => {
         body("helperText")
             .optional(true)
             .isString().withMessage("Helper Text should be string"),
+        body("orderNumber")
+            .optional(true)
+            .isInt().withMessage("Order Number should be number"),
     ];
 }
 const detailCustomFieldValidation = () => {

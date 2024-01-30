@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('remote_accesses', {
+    await queryInterface.createTable('asset_accounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,14 +17,7 @@ module.exports = {
         },
         allowNull: false,
       },
-      remoteType: {
-        type: Sequelize.STRING,
-        allowNull: false
-        // 1 = Anydesk
-        // 2 = Teamviwer
-        // 3 = VNC
-      },
-      remoteId: {
+      accountName: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -33,10 +26,10 @@ module.exports = {
         allowNull: false
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('remote_accesses');
+    await queryInterface.dropTable('asset_accounts');
   }
 };

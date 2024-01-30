@@ -1,4 +1,4 @@
-const { Asset, Department, Category, Manufacturer, Vendor, Condition, AssetModel } = require("../models");
+const { Asset, Company, Department, CustomField, Category, AssetStatus, Manufacturer, Vendor, Condition, AssetModel, AssetHasCustomField } = require("../models");
 const { Op } = require("sequelize");
 const excludeData = ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt'];
 const excludeData2 = ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt'];
@@ -22,7 +22,6 @@ class AssetController {
             }
         });
         const totalPage = Math.ceil(totalRows / limit);
-
         const result = await Asset.findAll({
             where: {
                 [Op.or]: [{
@@ -39,7 +38,7 @@ class AssetController {
                     model: Department,
                     attributes: {
                         exclude: excludeData
-                    }
+                    },
                 },
                 {
                     model: AssetModel,
@@ -48,6 +47,9 @@ class AssetController {
                     },
                     include: [{
                         model: Category,
+                        attributes: {
+                            exclude: excludeData
+                        }
                     }],
                 },
                 {
@@ -55,6 +57,34 @@ class AssetController {
                     attributes: {
                         exclude: excludeData
                     }
+                },
+                {
+                    model: Condition,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                },
+                {
+                    model: AssetStatus,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                },
+                {
+                    model: AssetHasCustomField,
+                    attributes: {
+                        include: ['id', 'customFieldId', 'customFieldValue', 'assetId'],
+                        exclude: ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
+                    },
+                    include: [
+                        {
+                            model: CustomField,
+                            attributes: {
+                                include: ['fieldName'],
+                                exclude: ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
+                            }
+                        }
+                    ]
                 }
             ],
             offset: offset,
@@ -63,6 +93,7 @@ class AssetController {
                 ['name', 'ASC']
             ]
         });
+
         let next = cekPagination(page, totalPage).next;
         let prev = cekPagination(page, totalPage).prev;
         responsePagination(200, result, page, limit, totalRows, totalPage, prev, next, "Get data " + title + " success", res);
@@ -100,117 +131,217 @@ class AssetController {
     }
     static getDataById = async (req, res) => {
         const { id } = req.params
-        const result = await Asset.findByPk(id);
+        const result = await Asset.findByPk(id, {
+            attributes: {
+                exclude: excludeData2
+            },
+            include: [
+                {
+                    model: Department,
+                    attributes: {
+                        exclude: excludeData
+                    },
+                    include: [{
+                        model: Company,
+                        attributes: {
+                            exclude: excludeData
+                        }
+                    }]
+                },
+                {
+                    model: AssetModel,
+                    attributes: {
+                        exclude: excludeData
+                    },
+                    include: [{
+                        model: Category,
+                        attributes: {
+                            exclude: excludeData
+                        }
+                    },
+                    {
+                        model: Manufacturer,
+                        attributes: {
+                            exclude: excludeData
+                        }
+                    },
+                    ],
+                },
+                {
+                    model: Vendor,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                },
+                {
+                    model: Condition,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                },
+                {
+                    model: AssetStatus,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                },
+                {
+                    model: AssetHasCustomField,
+                    attributes: {
+                        include: ['id', 'customFieldId', 'customFieldValue', 'assetId'],
+                        exclude: ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
+                    },
+                    include: [
+                        {
+                            model: CustomField,
+                            attributes: {
+                                include: ['fieldName'],
+                                exclude: ['isActive', 'isDeleted', 'createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
+                            }
+                        }
+                    ]
+                }
+            ],
+        });
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        console.log(req.body);
-        const userId = req.userData.id
+        const userName = req.userData.name
         const {
             name,
             departmentId,
+            assetModelId,
             vendorId,
-            model,
-            macAddress,
+            assetStatusId,
+            assetConditionId,
             serialNumber,
-            ipAddress,
+            macAddress,
             assetDetails,
             price,
             purchaseDate,
-            warantyPeriod
+            warantyPeriod,
+            customFields
+
         } = req.body;
-        console.log(
-            name,
-            departmentId,
-            vendorId,
-            model,
-            macAddress,
-            serialNumber,
-            ipAddress,
-            assetDetails,
-            price,
-            purchaseDate,
-            warantyPeriod);
         const result = await Asset.create({
             name: name,
             departmentId: departmentId,
             vendorId: vendorId,
-            model: model,
+            assetModelId: assetModelId,
+            assetStatusId: assetStatusId,
+            conditionId: assetConditionId,
             serialNumber: serialNumber,
             macAddress: macAddress,
-            ipAddress: ipAddress,
             assetDetails: assetDetails,
             price: price,
             purchaseDate: purchaseDate,
             warantyPeriod: warantyPeriod,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
+        if (result) {
+            customFields.length > 0 && customFields.map(async (item) => {
+                await AssetHasCustomField.create({
+                    assetId: result.dataValues.id,
+                    customFieldId: item.fieldId,
+                    customFieldValue: item.inputValue,
+                    createdBy: userName,
+                    modifiedBy: userName
+                })
+            })
+        }
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
+
         const { id } = req.params;
+        const userName = req.userData.name
         const {
-            name,
-            categoryId,
             departmentId,
-            manufacturerId,
+            assetModelId,
             vendorId,
-            conditionId,
-            model,
-            macAddress,
+            assetStatusId,
+            assetConditionId,
             serialNumber,
-            ipAddress,
+            macAddress,
             assetDetails,
             price,
             purchaseDate,
-            warantyPeriod
+            warantyPeriod,
+            customFields
         } = req.body;
 
         const asset = await Asset.findByPk(id);
         if (!asset) {
             response(404, null, "" + title + " not found", res);
         }
+        console.log(id, departmentId,
+            assetModelId,
+            vendorId,
+            assetStatusId,
+            assetConditionId,
+            serialNumber,
+            macAddress,
+            assetDetails,
+            price,
+            purchaseDate,
+            warantyPeriod,
+            customFields)
         await Asset.update(
             {
-                name: name,
-                categoryId: categoryId,
                 departmentId: departmentId,
-                manufacturerId: manufacturerId,
                 vendorId: vendorId,
-                conditionId: conditionId,
-                model: model,
+                assetModelId: assetModelId,
+                assetStatusId: assetStatusId,
+                conditionId: assetConditionId,
                 serialNumber: serialNumber,
                 macAddress: macAddress,
-                ipAddress: ipAddress,
                 assetDetails: assetDetails,
                 price: price,
                 purchaseDate: purchaseDate,
                 warantyPeriod: warantyPeriod,
-                modifiedBy: 1,
+                modifiedBy: userName
             },
             { where: { id: id } }
         );
+        console.log("UPDATEEEEEEEEEEEEEEEEEEEEEE")
+        customFields.length > 0 && customFields.map(async (item) => {
+            await AssetHasCustomField.update({
+                customFieldValue: item.inputValue,
+                modifiedBy: userName
+            }, {
+                where: {
+                    assetId: id,
+                    customFieldId: item.fieldId
+                }
+            })
+        })
 
         const result = await Asset.findByPk(id);
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
+        const userName = req.userData.name
         const { id } = req.params;
         const asset = await Asset.findByPk(id);
         if (!asset) {
             response(404, null, "" + title + " not found", res);
         }
-        await Asset.update(
-            {
-                isDeleted: true,
-                isActive: false,
-                deletedBy: 1,
-                deletedAt: new Date(),
-                modifiedBy: 1
-            },
-            { where: { id: id } }
-        );
+        // await Asset.update(
+        //     {
+        //         isDeleted: true,
+        //         isActive: false,
+        //         deletedBy: userName,
+        //         deletedAt: new Date(),
+        //         modifiedBy: userName
+        //     },
+        //     { where: { id: id } }
+        // );
+        await Asset.destroy({
+            where: {
+                id: id
+            }
+        });
         response(204, null, "Delete " + title + " success", res);
     }
     static getLastId = async (req, res) => {

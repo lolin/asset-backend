@@ -27,13 +27,13 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       deletedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

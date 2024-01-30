@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   AssetType.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'asset_types',
     sequelize,

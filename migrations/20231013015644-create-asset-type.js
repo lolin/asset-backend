@@ -17,11 +17,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdBy: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       modifiedBy: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
 
       },

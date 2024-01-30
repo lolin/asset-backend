@@ -82,17 +82,17 @@ class CompanyController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { name } = req.body;
         const result = await Company.create({
             name: name,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name } = req.body;
         const data = await Company.findByPk(id);
@@ -100,7 +100,7 @@ class CompanyController {
             response(404, null, "" + title + " not found", res);
         }
         await Company.update(
-            { name: name, modifiedBy: userId, },
+            { name: name, modifiedBy: userName, },
             { where: { id: id } }
         );
         const result = await Company.findByPk(id);
@@ -108,7 +108,7 @@ class CompanyController {
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const company = await Company.findByPk(id);
         if (!company) {

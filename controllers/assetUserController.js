@@ -57,20 +57,20 @@ class AssetUserController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { assetId, nik, name, departmentId } = req.body;
         const result = await AssetUser.create({
             assetId: assetId,
             nik: nik,
             name: name,
             departmentId: departmentId,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { assetId, nik, name, departmentId } = req.body;
         const remoteaccess = await AssetUser.findByPk(id);
@@ -83,7 +83,7 @@ class AssetUserController {
                 nik: nik,
                 name: name,
                 departmentId: departmentId,
-                modifiedBy: userId,
+                modifiedBy: userName,
             },
             { where: { id: id } }
         );
@@ -91,7 +91,7 @@ class AssetUserController {
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const AssetUser = await AssetUser.findByPk(id);
         if (!AssetUser) {
@@ -103,7 +103,7 @@ class AssetUserController {
                 isActive: false,
                 deletedBy: userId,
                 deletedAt: new Date(),
-                modifiedBy: userId
+                modifiedBy: userName
             },
             { where: { id: id } }
         );

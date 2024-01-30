@@ -11,14 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      AssetAccount.hasOne(models.Asset, {
+        foreignKey: 'id',
+        sourceKey: 'assetId'
+      })
     }
   }
   AssetAccount.init({
     assetId: DataTypes.INTEGER,
     accountName: DataTypes.STRING,
     password: DataTypes.STRING,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'asset_accounts',
     sequelize,

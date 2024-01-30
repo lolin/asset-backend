@@ -26,40 +26,40 @@ module.exports = {
       {
         name: 'Very Good',
         description: 'Only normal maintenance required',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Minor Defects',
         description: 'Minor maintenance required (5%)',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Maintenance Required',
         description: 'Significant maintenance required (10-20%)',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Require Renewal',
         description: 'Significant renewel/upgrade required (20-40%)',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Asset Unserviceable',
         description: 'Over 50% of asset requires replacement',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       }

@@ -22,7 +22,13 @@ module.exports = (sequelize, DataTypes) => {
     fieldType: DataTypes.STRING,
     fieldValue: DataTypes.STRING,
     fieldFormat: DataTypes.STRING,
-    helperText: DataTypes.STRING
+    helperText: DataTypes.STRING,
+    orderNumber: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1
+    },
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'custom_fields',
     sequelize,

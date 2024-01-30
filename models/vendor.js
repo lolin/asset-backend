@@ -27,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     picEmail: DataTypes.STRING,
     isActive: DataTypes.BOOLEAN,
     isDeleted: DataTypes.BOOLEAN,
-    deletedBy: DataTypes.INTEGER,
+    deletedBy: DataTypes.STRING,
     deletedAt: DataTypes.DATE,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'vendors',
     sequelize,

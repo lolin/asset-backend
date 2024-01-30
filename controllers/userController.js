@@ -64,13 +64,13 @@ class UserController {
             name: name,
             email: email,
             password: hash,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name, email, password } = req.body;
         var hash = null;
@@ -95,7 +95,7 @@ class UserController {
             response(404, null, "" + title + " not found", res);
         }
         await User.update(
-            { name: name, email: email, password: hash, modifiedBy: userId, },
+            { name: name, email: email, password: hash, modifiedBy: userName, },
             { where: { id: id } }
         );
         const result = await User.findByPk(id);
@@ -103,7 +103,7 @@ class UserController {
 
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const user = await User.findByPk(id);
         if (!user) {

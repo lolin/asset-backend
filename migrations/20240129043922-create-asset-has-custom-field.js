@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('asset_users', {
+    await queryInterface.createTable('asset_has_custom_fields', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,28 +15,22 @@ module.exports = {
           model: 'assets',
           key: 'id'
         },
-        allowNull: false,
       },
-      nik: {
-        type: Sequelize.STRING
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      departmentId: {
+      customFieldId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'departments',
+          model: 'custom_fields',
           key: 'id'
-        },
-        allowNull: false,
+        }
+      },
+      customFieldValue: {
+        type: Sequelize.STRING
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('asset_users');
+    await queryInterface.dropTable('asset_has_custom_fields');
   }
 };

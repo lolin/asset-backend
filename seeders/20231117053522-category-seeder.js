@@ -15,24 +15,24 @@ module.exports = {
     await queryInterface.bulkInsert('categories', [{
       name: 'Laptop',
       assetTypeId: 1,
-      createdBy: 1,
-      modifiedBy: 1,
+      createdBy: 'Putu Indrayana',
+      modifiedBy: 'Putu Indrayana',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
       name: 'PC',
       assetTypeId: 1,
-      createdBy: 1,
-      modifiedBy: 1,
+      createdBy: 'Putu Indrayana',
+      modifiedBy: 'Putu Indrayana',
       createdAt: new Date(),
       updatedAt: new Date()
     },
     {
       name: 'Monitor',
       assetTypeId: 1,
-      createdBy: 1,
-      modifiedBy: 1,
+      createdBy: 'Putu Indrayana',
+      modifiedBy: 'Putu Indrayana',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

@@ -23,8 +23,8 @@ module.exports = {
         picName: 'wayan',
         picPhone: '098765',
         picEmail: 'test@email.com',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       }

@@ -50,17 +50,14 @@ module.exports = {
         },
         allowNull: false,
       },
-      eol: {
-        type: Sequelize.INTEGER
-      },
       notes: {
         type: Sequelize.STRING
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

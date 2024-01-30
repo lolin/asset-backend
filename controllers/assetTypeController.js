@@ -64,18 +64,18 @@ class AssetTypeController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { name, description } = req.body;
         const result = await AssetType.create({
             name: name,
             description: description,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const { name, description } = req.body;
         const data = await AssetType.findByPk(id);
@@ -83,7 +83,7 @@ class AssetTypeController {
             response(404, null, "" + title + " not found", res);
         }
         await AssetType.update(
-            { name: name, description: description, modifiedBy: userId, },
+            { name: name, description: description, modifiedBy: userName, },
             { where: { id: id } }
         );
         const result = await AssetType.findByPk(id);
@@ -91,10 +91,10 @@ class AssetTypeController {
 
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
-        const AssetType = await AssetType.findByPk(id);
-        if (!AssetType) {
+        const data = await AssetType.findByPk(id);
+        if (!data) {
             response(404, null, "" + title + " not found", res);
         }
         await AssetType.destroy({

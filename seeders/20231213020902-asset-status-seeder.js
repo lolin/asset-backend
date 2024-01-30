@@ -16,32 +16,32 @@ module.exports = {
       {
         name: 'Available',
         description: 'Available asset ready to distribute',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Assigned',
         description: 'Asset that already assigned to user',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Maintenance',
         description: 'Asset under maintenance',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         name: 'Unavailable',
         description: 'Unavailable asset (broken, lost, etc)',
-        createdBy: 1,
-        modifiedBy: 1,
+        createdBy: 'Putu Indrayana',
+        modifiedBy: 'Putu Indrayana',
         createdAt: new Date(),
         updatedAt: new Date()
       },

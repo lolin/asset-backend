@@ -45,16 +45,16 @@ module.exports = {
         defaultValue: false,
       },
       deletedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       deletedAt: {
         type: Sequelize.DATE
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

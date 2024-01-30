@@ -3,3 +3,15 @@ Create Model and Migration:
 
 Create Seeder
 npx sequelize-cli seed:generate --name user-Seeder
+
+Migrate:
+npx sequelize-cli db:migrate
+
+Undo Migration
+npx sequelize-cli db:migrate:undo:all
+
+Seeding
+npx sequelize-cli db:seed:all
+
+Undo Seeding:
+npx sequelize-cli db:seed:undo

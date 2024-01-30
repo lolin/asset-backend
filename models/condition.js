@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     isDeleted: DataTypes.BOOLEAN,
     deletedAt: DataTypes.DATE,
     deletedBy: DataTypes.INTEGER,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'conditions',
     sequelize,

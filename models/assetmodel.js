@@ -40,7 +40,6 @@ module.exports = (sequelize, DataTypes) => {
     categoryId: DataTypes.NUMBER,
     fieldSetId: DataTypes.NUMBER,
     depreciationId: DataTypes.NUMBER,
-    eol: DataTypes.NUMBER,
     notes: DataTypes.STRING
   }, {
     tableName: 'asset_models',

@@ -67,14 +67,16 @@ class CustomFieldController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const {
             fieldSetId,
             fieldName,
             fieldType,
             fieldValue,
             fieldFormat,
-            helperText } = req.body;
+            helperText,
+            orderNumber } = req.body;
+        console.log("Heloo", req.body)
         const result = await CustomField.create(
             {
                 fieldSetId: fieldSetId,
@@ -83,14 +85,15 @@ class CustomFieldController {
                 fieldValue: fieldValue,
                 fieldFormat: fieldFormat,
                 helperText: helperText,
-                createdBy: userId,
-                modifiedBy: userId
+                orderNumber: orderNumber,
+                createdBy: userName,
+                modifiedBy: userName
             }
         );
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const {
             fieldSetId,
@@ -98,7 +101,8 @@ class CustomFieldController {
             fieldType,
             fieldValue,
             fieldFormat,
-            helperText
+            helperText,
+            orderNumber
         } = req.body;
         const datas = await CustomField.findByPk(id);
         if (!datas) {
@@ -110,8 +114,9 @@ class CustomFieldController {
             fieldType: fieldType,
             fieldValue: fieldValue,
             fieldFormat: fieldFormat,
+            orderNumber: orderNumber,
             helperText: helperText,
-            modifiedBy: userId
+            modifiedBy: userName
         },
             { where: { id: id } }
         );
@@ -119,7 +124,7 @@ class CustomFieldController {
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const result = await CustomField.findByPk(id);
         if (!result) {
@@ -154,7 +159,7 @@ class CustomFieldController {
                 }
             ],
             order: [
-                ['fieldName', 'ASC']
+                ['orderNumber', 'ASC']
             ]
         });
         response(200, result, "Get data " + title + " success", res);

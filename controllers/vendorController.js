@@ -33,20 +33,21 @@ class VendorController {
             attributes: {
                 exclude: excludeData
             },
-            include: [
-                {
-                    model: Asset,
-                    attributes: {
-                        exclude: excludeData
-                    }
-                }
-            ],
+            // include: [
+            //     {
+            //         model: Asset,
+            //         attributes: {
+            //             exclude: excludeData
+            //         }
+            //     }
+            // ],
             offset: offset,
             limit: limit,
             order: [
                 ['name', 'ASC']
             ]
         });
+        console.log(result);
         let next = cekPagination(page, totalPage).next;
         let prev = cekPagination(page, totalPage).prev;
         responsePagination(200, result, page, limit, totalRows, totalPage, prev, next, "Get data " + title + " success", res);
@@ -56,14 +57,14 @@ class VendorController {
             attributes: {
                 exclude: excludeData
             },
-            include: [
-                {
-                    model: Asset,
-                    attributes: {
-                        exclude: excludeData
-                    }
-                }
-            ],
+            // include: [
+            //     {
+            //         model: Asset,
+            //         attributes: {
+            //             exclude: excludeData
+            //         }
+            //     }
+            // ],
             order: [
                 ['name', 'ASC']
             ]
@@ -77,7 +78,7 @@ class VendorController {
     }
     static store = async (req, res) => {
         console.log("store data vendor");
-        const userId = req.userData.id
+        const userName = req.userData.name
         const {
             name,
             phone,
@@ -100,14 +101,14 @@ class VendorController {
             picEmail: picEmail,
             isActive: true,
             isDeleted: false,
-            createdBy: userId,
-            modifiedBy: userId
+            createdBy: userName,
+            modifiedBy: userName
         });
         console.log(result)
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const {
             name,
@@ -134,7 +135,7 @@ class VendorController {
                 picName: picName,
                 picPhone: picPhone,
                 picEmail: picEmail,
-                modifiedBy: userId
+                modifiedBy: userName
             },
             { where: { id: id } }
         );
@@ -143,7 +144,7 @@ class VendorController {
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userId = req.userData.id
+        const userName = req.userData.name
         const { id } = req.params;
         const vendor = await Vendor.findByPk(id);
         if (!vendor) {

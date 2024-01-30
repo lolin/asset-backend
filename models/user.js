@@ -42,8 +42,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     token: DataTypes.STRING,
-    createdBy: DataTypes.INTEGER,
-    modifiedBy: DataTypes.INTEGER
+    createdBy: DataTypes.STRING,
+    modifiedBy: DataTypes.STRING
   }, {
     tableName: 'users',
     sequelize,

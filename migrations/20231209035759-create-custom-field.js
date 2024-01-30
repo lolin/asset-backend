@@ -32,11 +32,15 @@ module.exports = {
       helperText: {
         type: Sequelize.STRING
       },
+      orderNumber: {
+        type: Sequelize.STRING,
+        defaultValue: 1,
+      },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       modifiedBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

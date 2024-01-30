@@ -15,8 +15,8 @@ module.exports = {
     await queryInterface.bulkInsert('departments', [{
       name: 'Head Office',
       companyId: 1,
-      createdBy: 1,
-      modifiedBy: 1,
+      createdBy: 'Putu Indrayana',
+      modifiedBy: 'Putu Indrayana',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
