@@ -47,7 +47,6 @@ class VendorController {
                 ['name', 'ASC']
             ]
         });
-        console.log(result);
         let next = cekPagination(page, totalPage).next;
         let prev = cekPagination(page, totalPage).prev;
         responsePagination(200, result, page, limit, totalRows, totalPage, prev, next, "Get data " + title + " success", res);
@@ -77,7 +76,6 @@ class VendorController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        console.log("store data vendor");
         const userName = req.userData.name
         const {
             name,
@@ -104,7 +102,6 @@ class VendorController {
             createdBy: userName,
             modifiedBy: userName
         });
-        console.log(result)
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {

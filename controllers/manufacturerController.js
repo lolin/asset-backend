@@ -96,7 +96,6 @@ class ManufacturerController {
         const userName = req.userData.name
         const { id } = req.params;
         const data = await Manufacturer.findByPk(id);
-        console.log(data)
         if (!data) {
             response(404, null, "" + title + " not found", res);
         }

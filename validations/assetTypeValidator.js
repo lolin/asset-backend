@@ -49,7 +49,6 @@ const showAssetTypeValidation = () => {
     ];
 }
 const deleteAssetTypeValidation = () => {
-    // console.log("validasi delete");
     return [
         param("id")
             .exists({ checkFalsy: true })

@@ -104,7 +104,6 @@ class AssetModelController {
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        // console.log("coa")
         const userName = req.userData.name
         const {
             name,
@@ -116,7 +115,6 @@ class AssetModelController {
             depreciationId,
             eol,
             notes } = req.body;
-        console.log(req.body);
         const result = await AssetModel.create({
             name: name,
             imageUrl: imageUrl,
@@ -130,12 +128,10 @@ class AssetModelController {
             createdBy: userName,
             modifiedBy: userName
         });
-        console.log(result);
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
         const userName = req.userData.name
-        console.log(req.userData);
         const { id } = req.params;
         const {
             name,

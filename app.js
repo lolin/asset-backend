@@ -14,7 +14,7 @@ var departmentRouter = require('./routes/departments');
 var vendorRouter = require('./routes/vendors');
 var conditionRouter = require('./routes/conditions');
 var assetRouter = require('./routes/assets');
-var remoteAccessRouter = require('./routes/remoteAccess');
+var remoteAccessRouter = require('./routes/remoteAccessList');
 var assetUserRouter = require('./routes/assetUser');
 var assetAccountRouter = require('./routes/assetAccount');
 var depreciationRouter = require('./routes/depreciations');
@@ -23,6 +23,7 @@ var customFieldRouter = require('./routes/customFields');
 var assetModelRouter = require('./routes/assetModels');
 var assetTypeRouter = require('./routes/assetType');
 var assetStatusRouter = require('./routes/assetStatus');
+var emailListRouter = require('./routes/emailList');
 var authRouter = require('./routes/auth');
 const middlewareLogRequest = require('./middleware/log');
 const errorHandler = require('./middleware/errorHandler')
@@ -59,6 +60,7 @@ app.use('/asset-status', assetStatusRouter);
 app.use('/remote-access', remoteAccessRouter);
 app.use('/asset-user', assetUserRouter);
 app.use('/asset-account', assetAccountRouter);
+app.use('/email-list', emailListRouter);
 app.use(errorHandler);
 
 app.post('/upload', upload.single('photo'), (req, res) => {

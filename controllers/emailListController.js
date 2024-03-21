@@ -1,39 +1,48 @@
-const { AssetRemoteAccess } = require("../models");
+const { EmailList, Department } = require("../models");
 const { Op } = require("sequelize");
+const excludeData = ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt'];
 const { response, responsePagination } = require('../utility/response');
 const cekPagination = require('../utility/cekPagination');
-const title = "Remote Access";
-class AssetRemoteAccessController {
+const title = "EmailList";
+class EmailListController {
     static show = async (req, res) => {
         const keyword = req.query.key || "";
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const offset = limit * (page - 1);
-        const totalRows = await AssetRemoteAccess.count({
+        const totalRows = await EmailList.count({
             where: {
                 [Op.or]: [{
-                    remoteType: {
+                    email: {
                         [Op.iLike]: '%' + keyword + '%'
                     }
                 }]
             }
         });
         const totalPage = Math.ceil(totalRows / limit);
-        const result = await AssetRemoteAccess.findAll({
+        const result = await EmailList.findAll({
             where: {
                 [Op.or]: [{
-                    remoteType: {
+                    email: {
                         [Op.iLike]: '%' + keyword + '%'
                     }
                 }]
             },
             attributes: {
-                exclude: ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
+                exclude: excludeData
             },
+            include: [
+                {
+                    model: Department,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                }
+            ],
             offset: offset,
             limit: limit,
             order: [
-                ['id', 'ASC']
+                ['email', 'ASC']
             ]
         });
         let next = cekPagination(page, totalPage).next;
@@ -41,73 +50,77 @@ class AssetRemoteAccessController {
         responsePagination(200, result, page, limit, totalRows, totalPage, prev, next, "Get data " + title + " success", res);
     }
     static showAll = async (req, res) => {
-        const result = await AssetRemoteAccess.findAll({
-            order: [
-                ['id', 'ASC']
-            ],
+        const result = await EmailList.findAll({
             attributes: {
-                exclude: ['createdBy', 'modifiedBy', 'deletedBy', 'createdAt', 'updatedAt', 'deletedAt']
-            }
+                exclude: excludeData
+            },
+            include: [
+                {
+                    model: Department,
+                    attributes: {
+                        exclude: excludeData
+                    }
+                }
+            ],
+            order: [
+                ['email', 'ASC']
+            ]
         });
         response(200, result, "Get data " + title + " success", res);
     }
     static getDataById = async (req, res) => {
         const { id } = req.params
-        const result = await AssetRemoteAccess.findByPk(id);
+        const result = await EmailList.findByPk(id);
         response(200, result, "Get data " + title + " success", res);
     }
     static store = async (req, res) => {
-        const userName = req.userData.name
-        const { assetId, remoteType, remoteId, password } = req.body;
-        const newAssetRemoteAccess = await AssetRemoteAccess.create({
-            assetId: assetId,
-            remoteType: remoteType,
-            remoteId: remoteId,
+        const nameUser = req.userData.employeeName
+        const { employeeName, departmentId, remoteId, email, password, } = req.body;
+        const result = await EmailList.create({
+            departmentId: departmentId || null,
+            employeeName: employeeName,
+            email: email,
             password: password,
-            createdBy: userName,
-            modifiedBy: userName
+            createdBy: nameUser,
+            modifiedBy: nameUser
         });
         response(201, result, "Create " + title + " success", res);
     }
     static update = async (req, res) => {
-        const userName = req.userData.name
+        const nameUser = req.userData.employeeName
         const { id } = req.params;
-        const { assetId, remoteType, remoteId, password } = req.body;
-        const remoteaccess = await AssetRemoteAccess.findByPk(id);
-        if (!remoteaccess) {
+        const { employeeName, departmentId, remoteId, email, password, } = req.body;
+        const data = await EmailList.findByPk(id);
+        if (!data) {
             response(404, null, "" + title + " not found", res);
         }
-        await AssetRemoteAccess.update(
+        await EmailList.update(
             {
-                assetId: assetId,
-                remoteType: remoteType,
+                employeeName: employeeName,
+                departmentId: departmentId || null,
                 remoteId: remoteId,
+                email: email,
                 password: password,
-                modifiedBy: userName,
+                modifiedBy: nameUser,
             },
             { where: { id: id } }
         );
-        const result = await AssetRemoteAccess.findByPk(id);
+        const result = await EmailList.findByPk(id);
         response(200, result, "Update " + title + " success", res);
     }
     static destroy = async (req, res) => {
-        const userName = req.userData.name
+        const nameUser = req.userData.employeeName
         const { id } = req.params;
-        const AssetRemoteAccess = await AssetRemoteAccess.findByPk(id);
-        if (!AssetRemoteAccess) {
+        const data = await EmailList.findByPk(id);
+        if (!data) {
             response(404, null, "" + title + " not found", res);
         }
-        await AssetRemoteAccess.update(
-            {
-                isDeleted: true,
-                isActive: false,
-                deletedBy: userId,
-                deletedAt: new Date(),
-                modifiedBy: userName
-            },
-            { where: { id: id } }
-        );
+        await EmailList.destroy({
+            where: {
+                id: id
+            }
+        });
         response(204, null, "Delete " + title + " success", res);
     }
 }
-module.exports = AssetRemoteAccessController
+module.exports = EmailListController

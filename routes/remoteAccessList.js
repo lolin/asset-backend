@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Controller = require("../controllers/remoteAccessController");
+const Controller = require("../controllers/remoteAccessListController");
 const authMiddleware = require('../middleware/accessValidation');
 const errorMiddleware = require('../middleware/errorMiddleware');
 const { createRemoteAccessValidation,

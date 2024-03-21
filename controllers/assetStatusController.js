@@ -81,7 +81,6 @@ class AssetStatusController {
         if (!data) {
             response(404, null, "" + title + " not found", res);
         }
-        console.log(userName, id, name, description);
         await AssetStatus.update(
             { name: name, description: description, modifiedBy: userName, },
             { where: { id: id } }

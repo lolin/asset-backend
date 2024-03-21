@@ -275,18 +275,6 @@ class AssetController {
         if (!asset) {
             response(404, null, "" + title + " not found", res);
         }
-        console.log(id, departmentId,
-            assetModelId,
-            vendorId,
-            assetStatusId,
-            assetConditionId,
-            serialNumber,
-            macAddress,
-            assetDetails,
-            price,
-            purchaseDate,
-            warantyPeriod,
-            customFields)
         await Asset.update(
             {
                 departmentId: departmentId,
@@ -304,7 +292,6 @@ class AssetController {
             },
             { where: { id: id } }
         );
-        console.log("UPDATEEEEEEEEEEEEEEEEEEEEEE")
         customFields.length > 0 && customFields.map(async (item) => {
             await AssetHasCustomField.update({
                 customFieldValue: item.inputValue,

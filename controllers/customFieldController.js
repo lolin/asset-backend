@@ -76,7 +76,6 @@ class CustomFieldController {
             fieldFormat,
             helperText,
             orderNumber } = req.body;
-        console.log("Heloo", req.body)
         const result = await CustomField.create(
             {
                 fieldSetId: fieldSetId,

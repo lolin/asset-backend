@@ -1,5 +1,3 @@
 const errorMiddleware = fn => (req, res, next) =>
-    Promise.resolve(fn(req, res, next)).catch(
-        console.log(res)
-    )
+    Promise.resolve(fn(req, res, next)).catch(next)
 module.exports = errorMiddleware
